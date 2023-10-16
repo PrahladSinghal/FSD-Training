@@ -1,0 +1,289 @@
+https://github.com/sandipmohapatra/HDFC
+-----------------------------------------------------------
+MYSql 8.0
+https://dev.mysql.com/downloads/mysql/
+-------------------------------
+MongoDB
+https://www.mongodb.com/download-center/community/releases/archive/mongodb-windows-x86_64-7.0.0.zip
+------------------------------------
+Eclipse
+https://www.eclipse.org/downloads/
+-----------------------------------
+MySQL
+-------------------
+To view the list of databases
+1)show databases;
+--------------------------------------------
+To create database
+2)create database HDFC;
+-------------------------------------------------
+To use the database
+3)use HDFC
+---------------------------------------------------
+To create a table
+4)create table student(rollno int,name varchar(50),address varchar(60));
+-------------------------------------------------------------------------------------------------
+To view the table structure
+5)desc student; 
+--------------------------------------------------------------------
+To insert data into the table
+6)insert into student values(101,'sandip','Bangalore');
+-------------------------------------------------------------------------------
+To view the table
+7)select * from student;
+select rollno,name from student;
+---------------------------------------------------------------------
+To update the data
+8) update student set address='Hydrabad' where rollno=102;
+----------------------------------------------------------------------------------------
+To add column
+9)alter table student add phy int;
+alter table student add chem int;
+alter table student add bio int;
+alter table student add tot int;
+alter table student add avg int;
+-----------------------------------------------------------------------
+To insert the data into the new column
+10)update student set phy=67,chem=77,bio=83 where rollno=101;
+update student set phy=65,chem=75,bio=73 where rollno=102;
+update student set phy=62,chem=72,bio=72 where rollno=103;
+update student set tot=phy+chem+bio;
+update student set avg=tot/3;
+---------------------------------------------------------------------
+To delete a row
+11)delete from student where rollno=103;
+----------------------------------------------------------------------------------
+to delete a column
+12)alter table student drop column phy;
+alter table student drop column tot;
+---------------------------------------------------------------------------------------
+to insert multiple rows
+13)insert into student(rollno,name,address)  values(103,'sunil','Pune'),
+ (104,'Madhu','Hydrabad'),(105,'sumeet','Delhi');
+------------------------------------------------------------------------------------------------------------
+14)To create a clone table
+create table student1 as select * from student;
+ create table student2 as select * from student order by name desc;
+create table student3 as select * from student order by name asc;
+create table student4 as select address,name,rollno from student;
+create table student5 as select address,name from student;
+-------------------------------------------------------------------------------------------------
+15)To delete all rows from a table;
+truncate table student;
+delete from student;
+*In this the structure will be present;
+----------------------------------------------------------------------------------------
+16)To display the unique values
+select distinct name from student3;
+-------------------------------------------------------------------------------------------
+To delete a table;
+17)drop table student;
+In this the table structure will be deleted.
+-------------------------------------------------------------------------------------------------------------
+Order by clause;
+18)select * from student order by name desc;
+select * from student order by name asc;
+---------------------------------------------------------------------------------------------------------------
+INSERT INTO new_employees (employee_id, first_name, last_name, salary)
+SELECT employee_id, first_name, last_name, salary
+FROM employees;
+-----------------------------------------------------------------------------------------------------------------------
+constraints
+-----------------------
+1)primary key :- If we declare a column as primary key we cannot enter duplicate values and we cannot keep the column empty.
+2)not null:-It we declare the column as not null we cannot keep the column empty.
+3)auto_increment:- if we declare a column as auto increment we neednot enter any value .It will automatically increment.
+--------------------------------------------------------
+create table employee (empno int not null auto_increment,name varchar(30) not null,address varchar(30) not null,primary key(empno));
+--------------------------------------------------------------
+composite key
+----------------------------
+create table employee1 (empno int not null auto_increment,name varchar(30) not null,address varchar(30) not null ,salary int not null,primary key(empno,name));
+---------------------------------------------------------------------------------
+create table employee2 (empno int not null auto_increment,name varchar(30) not null,address varchar(30) not null ,salary int not null,primary key(empno,name,address));
+-------------------------------------------------------------------------------------------
+JDBC :- java database connectivity
+In this we can connect java program with database
+we have to follow 4 steps
+--------------------------------------
+1)load the driver (oracle driver,mysql driver,mongodb driver)
+2)create a connection by providing url,username,password
+3)statement or querry
+4)execute command
+-----------------------------------------------------------------------------
+import java.util.*;
+import java.sql.*;
+public class First
+{
+public static void main(String[] args) throws Exception
+{
+Class.forName("com.mysql.jdbc.Driver");
+Connection con=DriverManager.getConnection
+("jdbc:mysql://localhost:3306/hdfc","root","1234");
+Statement st=con.createStatement();
+//st.execute("create table hdfcemp(empno int,name varchar(30),"
+//		+ "address varchar(30),salary int)");
+//st.execute("insert into hdfcemp values(101,'sandip','bangalore',89000)");
+//st.execute("update hdfcemp set name='sunil' where empno=101");
+st.execute("delete from hdfcemp where empno=101");
+System.out.println("row deleted");
+}}
+--------------------------------------------------------------------------------
+import java.util.*;
+import java.sql.*;
+public class First
+{
+public static void main(String[] args) throws Exception
+{
+Class.forName("com.mysql.jdbc.Driver");
+Connection con=DriverManager.getConnection
+("jdbc:mysql://localhost:3306/hdfc","root","1234");
+Scanner ob=new Scanner(System.in);
+System.out.println("enter empno,name,address,salary");
+int empno=ob.nextInt();
+String name=ob.next();
+String address=ob.next();
+int salary=ob.nextInt();
+PreparedStatement st=con.prepareStatement("insert into hdfcemp values(?,?,?,? )");
+st.setInt(1,empno);
+st.setString(2,name);
+st.setString(3,address);
+st.setInt(4, salary);
+st.execute();
+System.out.println("row inseretd");
+}
+}
+------------------------------------------------------------------------------
+update
+------------
+import java.util.*;
+import java.sql.*;
+public class First
+{
+public static void main(String[] args) throws Exception
+{
+Class.forName("com.mysql.jdbc.Driver");
+Connection con=DriverManager.getConnection
+("jdbc:mysql://localhost:3306/hdfc","root","1234");
+Scanner ob=new Scanner(System.in);
+System.out.println("enter name,address,salary and empno which you want to modify");
+String name=ob.next();
+String address=ob.next();
+int salary=ob.nextInt();
+int empno=ob.nextInt();
+PreparedStatement st=con.prepareStatement("update hdfcemp set name=?,address=?,salary=? where empno=?");
+st.setString(1,name);
+st.setString(2,address);
+st.setInt(3, salary);
+st.setInt(4,empno);
+st.execute();
+System.out.println("row updated");
+}}
+---------------------------------------------------------------------------------------------------
+import java.util.*;
+import java.sql.*;
+public class First
+{
+public static void main(String[] args) throws Exception
+{
+Class.forName("com.mysql.jdbc.Driver");
+Connection con=DriverManager.getConnection
+("jdbc:mysql://localhost:3306/hdfc","root","1234");
+Scanner ob=new Scanner(System.in);
+System.out.println("enter empno which you want to delete");
+int empno=ob.nextInt();
+PreparedStatement st=con.prepareStatement("delete from hdfcemp where empno=?");
+st.setInt(1,empno);
+st.execute();
+System.out.println("row deleted");
+}}
+
+----------------------------------------------
+import java.util.*;
+import java.sql.*;
+public class First
+{
+	public static void main(String[] args) throws Exception
+	{
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection con=DriverManager.getConnection
+				("jdbc:mysql://localhost:3306/hdfc","root","1234");
+		Scanner ob=new Scanner(System.in);
+		System.out.println("enter empno which you want to delete");
+		int empno=ob.nextInt();
+		PreparedStatement st=con.prepareStatement("delete from hdfcemp where empno=?");
+		st.setInt(1,empno);
+		int x=st.executeUpdate(); //return 0 or 1
+		if(x==1)
+			System.out.println("row deleted");
+		else
+			System.out.println("row not deleted");
+
+	}}
+----------------------------------------------------------------------------
+wap to program to create a bank class (accno,name,phoneno,balance)
+customer will either withdraw or deposite .Display the final details of the customer who's accno is entered.
+minimum balance should be 1000.
+--------------------------------------------------------------------------------------------
+select the records of a table
+------------------------------------------
+import java.util.*;
+import java.sql.*;
+public class First
+{
+public static void main(String[] args) throws Exception
+{
+Class.forName("com.mysql.jdbc.Driver");
+Connection con=DriverManager.getConnection
+("jdbc:mysql://localhost:3306/hdfc","root","1234");
+Statement st=con.createStatement();
+ResultSet rs=st.executeQuery("select * from hdfcemp");
+while(rs.next())
+{
+	System.out.println(rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3)+" "+rs.getInt(4));
+}
+}}
+-----------------------------------------------------------------
+import java.util.*;
+import java.sql.*;
+public class First
+{
+public static void main(String[] args) throws Exception
+{
+Class.forName("com.mysql.jdbc.Driver");
+Connection con=DriverManager.getConnection
+("jdbc:mysql://localhost:3306/hdfc","root","1234");
+Statement st=con.createStatement();
+ResultSet rs=st.executeQuery("select salary from hdfcemp where empno=101");
+while(rs.next())
+{
+	System.out.println(rs.getInt(1));
+}
+}}
+-------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
